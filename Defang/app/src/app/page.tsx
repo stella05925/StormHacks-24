@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState, useContext } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -22,7 +21,6 @@ type UserLocation = {
 }
 
 export default function Home() {
-  const { data: session } = useSession()
   const [category, setCategory] = useState<Category | undefined>()
   const [radius, setRadius] = useState<number>(2500)
   const [businessList, setBusinessList] = useState<Business[]>([])
@@ -30,12 +28,6 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const { userLocation, setUserLocation } = useContext(UserLocationContext) as { userLocation: UserLocation, setUserLocation: (location: UserLocation) => void }
-
-  useEffect(() => {
-    if (!session?.user) {
-      router.push('/Login')
-    }
-  }, [session, router])
 
   useEffect(() => {
     getGooglePlace()
